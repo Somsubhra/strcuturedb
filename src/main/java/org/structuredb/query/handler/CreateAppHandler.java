@@ -1,5 +1,7 @@
 package org.structuredb.query.handler;
 
+import com.google.gson.JsonObject;
+import org.structuredb.exception.AppNameRequiredException;
 import org.structuredb.query.data.QueryData;
 import org.structuredb.structure.Error;
 import org.structuredb.structure.Structure;
@@ -12,9 +14,18 @@ public class CreateAppHandler extends QueryHandler {
     }
 
     @Override
-    public Structure run(QueryData queryData) {
-        Console.info("Creating app with " + queryData);
-        Console.info(queryData.toParsedData());
+    public Structure run(QueryData queryData, String dataPath) {
+
+        JsonObject parsedData = queryData.toParsedData().getAsJsonObject();
+
+        if(!parsedData.has("app")) {
+            return new Error(new AppNameRequiredException());
+        }
+
+        String app = parsedData.get("app").getAsString();
+
+        Console.info("Creating app " + app);
+
         return new Error(new RuntimeException("Not implemented yet"));
     }
 }

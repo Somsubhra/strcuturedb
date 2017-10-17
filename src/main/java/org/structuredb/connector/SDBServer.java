@@ -19,17 +19,20 @@ public class SDBServer extends Thread {
 
     private Integer poolSize;
 
+    private String dataPath;
+
     private ServerSocket serverSocket;
 
     private QueryExecutor queryExecutor;
 
-    public SDBServer(String host, Integer port, Integer poolSize) throws IOException {
+    public SDBServer(String host, Integer port, Integer poolSize, String dataPath) throws IOException {
         this.host = host;
         this.port = port;
         this.poolSize = poolSize;
+        this.dataPath = dataPath;
         this.serverSocket = new ServerSocket();
         this.serverSocket.bind(new InetSocketAddress(this.host, this.port));
-        this.queryExecutor = new QueryExecutor(poolSize);
+        this.queryExecutor = new QueryExecutor(poolSize, dataPath);
     }
 
     @Override
@@ -80,5 +83,9 @@ public class SDBServer extends Thread {
 
     public Integer getPoolSize() {
         return poolSize;
+    }
+
+    public String getDataPath() {
+        return dataPath;
     }
 }

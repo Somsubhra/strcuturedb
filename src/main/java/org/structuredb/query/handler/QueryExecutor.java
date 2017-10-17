@@ -13,11 +13,17 @@ import java.util.concurrent.Future;
 
 public class QueryExecutor {
 
+    private int poolSize;
+
+    private String dataPath;
+
     private QueryParser queryParser;
 
     private ExecutorService executorService;
 
-    public QueryExecutor(int poolSize) {
+    public QueryExecutor(int poolSize, String dataPath) {
+        this.poolSize = poolSize;
+        this.dataPath = dataPath;
         this.queryParser = new QueryParser();
         this.executorService = Executors.newFixedThreadPool(poolSize);
     }
@@ -27,12 +33,20 @@ public class QueryExecutor {
             ParsedQuery parsedQuery = queryParser.parse(rawQuery);
 
             // TODO: Prevent loading this on every handle call
-            QueryHandlerMap queryHandlerMap = new QueryHandlerMap(parsedQuery.getQueryData());
+            QueryHandlerMap queryHandlerMap = new QueryHandlerMap(parsedQuery.getQueryData(), dataPath);
 
             Future<Structure> future = executorService.submit(queryHandlerMap.getHandler(parsedQuery.getQueryType()));
             return future.get();
         } catch (Throwable t) {
             return new Error(t);
         }
+    }
+
+    public int getPoolSize() {
+        return poolSize;
+    }
+
+    public String getDataPath() {
+        return dataPath;
     }
 }

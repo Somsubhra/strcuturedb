@@ -13,14 +13,17 @@ public class QueryHandlerMap {
 
     private QueryData queryData;
 
-    public QueryHandlerMap(QueryData queryData) {
+    private String dataPath;
+
+    public QueryHandlerMap(QueryData queryData, String dataPath) {
         this.map = new HashMap<>();
         this.queryData = queryData;
+        this.dataPath = dataPath;
         build();
     }
 
     private void build() {
-        map.put(QueryType.CREATE_APP, () -> CreateAppHandler.getInstance().run(queryData));
+        map.put(QueryType.CREATE_APP, () -> CreateAppHandler.getInstance().run(queryData, dataPath));
     }
 
     public Map<QueryType, Callable<Structure>> getMap() {

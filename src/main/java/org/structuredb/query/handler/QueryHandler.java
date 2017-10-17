@@ -5,5 +5,5 @@ import org.structuredb.structure.Structure;
 
 public abstract class QueryHandler {
 
-    public abstract Structure run(QueryData queryData);
+    public abstract Structure run(QueryData queryData, String dataPath);
 }
