@@ -1,5 +1,8 @@
 package org.structuredb.connector;
 
+import org.structuredb.query.data.Query;
+import org.structuredb.query.data.QueryParser;
+import org.structuredb.query.handler.QueryExecutor;
 import org.structuredb.utils.Console;
 
 import java.io.*;
@@ -12,15 +15,21 @@ public class TCPServer extends Thread {
 
     private String host;
 
-    private String port;
+    private Integer port;
+
+    private Integer poolSize;
 
     private ServerSocket serverSocket;
 
-    public TCPServer(String host, String port) throws IOException {
+    private QueryExecutor queryExecutor;
+
+    public TCPServer(String host, Integer port, Integer poolSize) throws IOException {
         this.host = host;
         this.port = port;
+        this.poolSize = poolSize;
         this.serverSocket = new ServerSocket();
-        this.serverSocket.bind(new InetSocketAddress(this.host, Integer.parseInt(this.port)));
+        this.serverSocket.bind(new InetSocketAddress(this.host, this.port));
+        this.queryExecutor = new QueryExecutor(poolSize);
     }
 
     @Override
@@ -46,10 +55,11 @@ public class TCPServer extends Thread {
             BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-            String query = null;
+            String query;
 
             while((query = socketReader.readLine()) != null) {
                 Console.query(query);
+                queryExecutor.handle(new Query());
                 socketWriter.write("ACK\n");
                 socketWriter.flush();
             }
@@ -64,7 +74,11 @@ public class TCPServer extends Thread {
         return host;
     }
 
-    public String getPort() {
+    public Integer getPort() {
         return port;
+    }
+
+    public Integer getPoolSize() {
+        return poolSize;
     }
 }

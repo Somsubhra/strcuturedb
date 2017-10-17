@@ -21,12 +21,13 @@ public class Application {
         Properties properties = configReader.getProperties();
         String host = properties.getProperty("host", "127.0.0.1");
         String port = properties.getProperty("port", "9876");
+        String poolSize = properties.getProperty("pool-size", "10");
 
         Console.info("Starting StructureDB");
         Console.info("Connector listening on " + host + ":" + port);
 
         try {
-            Thread t = new TCPServer(host, port);
+            Thread t = new TCPServer(host, Integer.parseInt(port), Integer.parseInt(poolSize));
             t.start();
         }  catch (IOException e) {
             e.printStackTrace();
