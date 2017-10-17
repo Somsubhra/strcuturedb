@@ -1,9 +1,10 @@
 package org.structuredb.query.handler;
 
 import org.structuredb.query.data.ParsedQuery;
-import org.structuredb.query.data.Query;
+import org.structuredb.query.data.RawQuery;
 import org.structuredb.query.data.QueryParser;
-import org.structuredb.structure.Structure;
+import org.structuredb.structure.*;
+import org.structuredb.structure.Error;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -21,10 +22,14 @@ public class QueryExecutor {
         this.executorService = Executors.newFixedThreadPool(poolSize);
     }
 
-    public Structure handle(Query query) throws ExecutionException, InterruptedException {
-        ParsedQuery parsedQuery = queryParser.parse(query);
-        QueryHandlerMap queryHandlerMap = new QueryHandlerMap(parsedQuery.getQueryData());
-        Future<Structure> future = executorService.submit(queryHandlerMap.getHandler(parsedQuery.getQueryType()));
-        return future.get();
+    public Structure handle(RawQuery rawQuery) throws ExecutionException, InterruptedException {
+        try {
+            ParsedQuery parsedQuery = queryParser.parse(rawQuery);
+            QueryHandlerMap queryHandlerMap = new QueryHandlerMap(parsedQuery.getQueryData());
+            Future<Structure> future = executorService.submit(queryHandlerMap.getHandler(parsedQuery.getQueryType()));
+            return future.get();
+        } catch (Throwable t) {
+            return new Error(t);
+        }
     }
 }

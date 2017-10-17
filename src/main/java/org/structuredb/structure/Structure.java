@@ -1,5 +1,6 @@
 package org.structuredb.structure;
 
-public class Structure {
+public abstract class Structure {
 
+    public abstract String serialize();
 }

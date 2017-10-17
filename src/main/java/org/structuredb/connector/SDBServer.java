@@ -1,8 +1,8 @@
 package org.structuredb.connector;
 
-import org.structuredb.query.data.Query;
-import org.structuredb.query.data.QueryParser;
+import org.structuredb.query.data.RawQuery;
 import org.structuredb.query.handler.QueryExecutor;
+import org.structuredb.structure.Structure;
 import org.structuredb.utils.Console;
 
 import java.io.*;
@@ -11,7 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 
-public class TCPServer extends Thread {
+public class SDBServer extends Thread {
 
     private String host;
 
@@ -23,7 +23,7 @@ public class TCPServer extends Thread {
 
     private QueryExecutor queryExecutor;
 
-    public TCPServer(String host, Integer port, Integer poolSize) throws IOException {
+    public SDBServer(String host, Integer port, Integer poolSize) throws IOException {
         this.host = host;
         this.port = port;
         this.poolSize = poolSize;
@@ -58,9 +58,10 @@ public class TCPServer extends Thread {
             String query;
 
             while((query = socketReader.readLine()) != null) {
-                Console.query(query);
-                queryExecutor.handle(new Query());
-                socketWriter.write("ACK\n");
+                RawQuery rawQuery = new RawQuery(query);
+                Console.query(rawQuery);
+                Structure structure = queryExecutor.handle(rawQuery);
+                socketWriter.write(structure.serialize() + "\n");
                 socketWriter.flush();
             }
 

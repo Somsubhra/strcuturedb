@@ -1,7 +1,7 @@
 package org.structuredb;
 
 import org.structuredb.configuration.ConfigReader;
-import org.structuredb.connector.TCPServer;
+import org.structuredb.connector.SDBServer;
 import org.structuredb.utils.Console;
 
 import java.io.IOException;
@@ -27,7 +27,7 @@ public class Application {
         Console.info("Connector listening on " + host + ":" + port);
 
         try {
-            Thread t = new TCPServer(host, Integer.parseInt(port), Integer.parseInt(poolSize));
+            Thread t = new SDBServer(host, Integer.parseInt(port), Integer.parseInt(poolSize));
             t.start();
         }  catch (IOException e) {
             e.printStackTrace();
