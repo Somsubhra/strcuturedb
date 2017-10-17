@@ -13,7 +13,8 @@ public class Error extends Structure {
     @Override
     public String serialize() {
         JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("error", exception.getMessage());
+        jsonObject.addProperty("success", false);
+        jsonObject.addProperty("result", exception.getMessage());
         return jsonObject.toString();
     }
 }
