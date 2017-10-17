@@ -38,7 +38,6 @@ public class SDBServer extends Thread {
             try {
                 final Socket socket = serverSocket.accept();
                 Console.connection("Incoming connection from " + socket);
-
                 Runnable runnable = () -> handleRequests(socket);
                 new Thread(runnable).start();
             } catch (SocketTimeoutException e) {

@@ -13,7 +13,7 @@ public class CreateAppHandler extends QueryHandler {
 
     @Override
     public Structure run(QueryData queryData) {
-        Console.info("Creating app");
+        Console.info("Creating app with " + queryData);
         return new Error(new RuntimeException("Not implemented yet"));
     }
 }
