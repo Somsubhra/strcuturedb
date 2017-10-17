@@ -1,5 +1,7 @@
 package org.structuredb.structure;
 
+import com.google.gson.JsonObject;
+
 public class Error extends Structure {
 
     private Throwable exception;
@@ -10,6 +12,8 @@ public class Error extends Structure {
 
     @Override
     public String serialize() {
-        return exception.getMessage();
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("error", exception.getMessage());
+        return jsonObject.toString();
     }
 }
