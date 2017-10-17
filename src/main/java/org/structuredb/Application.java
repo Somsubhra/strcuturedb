@@ -2,7 +2,7 @@ package org.structuredb;
 
 import org.structuredb.configuration.ConfigReader;
 import org.structuredb.connector.SDBServer;
-import org.structuredb.fileops.InitDataDirectory;
+import org.structuredb.fileops.DataFiles;
 import org.structuredb.utils.Console;
 
 import java.io.IOException;
@@ -26,7 +26,13 @@ public class Application {
         String dataPath = properties.getProperty("data", "/structuredb");
 
         Console.info("Using data path " + dataPath);
-        InitDataDirectory.init(dataPath);
+
+        try {
+            DataFiles.init(dataPath);
+        } catch (Exception e) {
+            Console.error(e.getMessage());
+            System.exit(1);
+        }
 
         Console.info("Starting StructureDB");
         Console.info("Connector listening on " + host + ":" + port);
@@ -35,7 +41,8 @@ public class Application {
             Thread t = new SDBServer(host, Integer.parseInt(port), Integer.parseInt(poolSize), dataPath);
             t.start();
         } catch (IOException e) {
-            e.printStackTrace();
+            Console.error(e.getMessage());
+            System.exit(1);
         }
     }
 
