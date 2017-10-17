@@ -19,7 +19,7 @@ public class QueryParser {
 
     public ParsedQuery parse(RawQuery rawQuery) {
 
-        // TODO: Can be optimized by delimiting by only the first space
+        // TODO: Can be optimized by delimiting using the first space
 
         String[] queryComponents = rawQuery.getQuery().split("\\s+");
 

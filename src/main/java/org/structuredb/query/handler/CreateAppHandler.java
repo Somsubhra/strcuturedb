@@ -14,6 +14,7 @@ public class CreateAppHandler extends QueryHandler {
     @Override
     public Structure run(QueryData queryData) {
         Console.info("Creating app with " + queryData);
+        Console.info(queryData.toParsedData());
         return new Error(new RuntimeException("Not implemented yet"));
     }
 }
