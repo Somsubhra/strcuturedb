@@ -26,7 +26,7 @@ public class ConfigReader {
         } catch (IOException ex) {
             ex.printStackTrace();
         } finally {
-            if(this.inputStream != null) {
+            if (this.inputStream != null) {
                 try {
                     this.inputStream.close();
                 } catch (IOException ex) {

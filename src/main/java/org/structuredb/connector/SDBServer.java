@@ -34,7 +34,7 @@ public class SDBServer extends Thread {
 
     @Override
     public void run() {
-        while(true) {
+        while (true) {
             try {
                 final Socket socket = serverSocket.accept();
                 Console.connection("Incoming connection from " + socket);
@@ -56,7 +56,7 @@ public class SDBServer extends Thread {
 
             String query;
 
-            while((query = socketReader.readLine()) != null) {
+            while ((query = socketReader.readLine()) != null) {
                 RawQuery rawQuery = new RawQuery(query);
                 Console.query(rawQuery);
                 Structure structure = queryExecutor.handle(rawQuery);

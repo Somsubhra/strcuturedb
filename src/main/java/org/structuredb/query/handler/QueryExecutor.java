@@ -1,10 +1,10 @@
 package org.structuredb.query.handler;
 
 import org.structuredb.query.data.ParsedQuery;
-import org.structuredb.query.data.RawQuery;
 import org.structuredb.query.data.QueryParser;
-import org.structuredb.structure.*;
+import org.structuredb.query.data.RawQuery;
 import org.structuredb.structure.Error;
+import org.structuredb.structure.Structure;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;

@@ -10,7 +10,7 @@ import java.util.Properties;
 public class Application {
 
     public static void main(String[] args) {
-        if(args.length != 1) {
+        if (args.length != 1) {
             Console.error("Usage: structuredb /path/to/conf");
             System.exit(1);
         }
@@ -29,7 +29,7 @@ public class Application {
         try {
             Thread t = new SDBServer(host, Integer.parseInt(port), Integer.parseInt(poolSize));
             t.start();
-        }  catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

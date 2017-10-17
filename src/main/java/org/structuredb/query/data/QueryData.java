@@ -3,7 +3,6 @@ package org.structuredb.query.data;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.structuredb.exception.QueryDataParseException;
 
 public class QueryData {
 

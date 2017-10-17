@@ -1,8 +1,8 @@
 package org.structuredb.query.handler;
 
 import org.structuredb.query.data.QueryData;
-import org.structuredb.structure.*;
 import org.structuredb.structure.Error;
+import org.structuredb.structure.Structure;
 import org.structuredb.utils.Console;
 
 public class CreateAppHandler extends QueryHandler {

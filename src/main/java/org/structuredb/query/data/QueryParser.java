@@ -23,13 +23,13 @@ public class QueryParser {
 
         String[] queryComponents = rawQuery.getQuery().split("\\s+");
 
-        if(queryComponents.length == 0) {
+        if (queryComponents.length == 0) {
             throw new BlankQueryException();
         }
 
         QueryData queryData;
 
-        if(queryComponents.length > 1) {
+        if (queryComponents.length > 1) {
             String[] queryDataComponents = Arrays.copyOfRange(queryComponents, 1, queryComponents.length);
             String queryDataString = String.join(" ", queryDataComponents);
             queryData = new QueryData(queryDataString);
@@ -39,7 +39,7 @@ public class QueryParser {
 
         String rawQueryType = queryComponents[0];
 
-        if(!queryTypeMap.containsKey(rawQueryType)) {
+        if (!queryTypeMap.containsKey(rawQueryType)) {
             throw new UnknownQueryType(rawQueryType);
         }
 
