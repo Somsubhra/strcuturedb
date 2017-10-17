@@ -2,9 +2,9 @@ package org.structuredb;
 
 import org.structuredb.configuration.ConfigReader;
 import org.structuredb.connector.SDBServer;
+import org.structuredb.fileops.InitDataDirectory;
 import org.structuredb.utils.Console;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -26,7 +26,7 @@ public class Application {
         String dataPath = properties.getProperty("data", "/structuredb");
 
         Console.info("Using data path " + dataPath);
-        createDataDirectoryIfNotExists(dataPath);
+        InitDataDirectory.init(dataPath);
 
         Console.info("Starting StructureDB");
         Console.info("Connector listening on " + host + ":" + port);
@@ -39,17 +39,4 @@ public class Application {
         }
     }
 
-    private static void createDataDirectoryIfNotExists(String dataPath) {
-        File file = new File(dataPath);
-
-        if (!file.exists()) {
-            Console.info("Data path " + dataPath + " does not exist. Creating it now.");
-            if(file.mkdirs()) {
-                Console.info("Created data path successfully");
-            } else {
-                Console.error("Failed to create data path");
-                System.exit(1);
-            }
-        }
-    }
 }
