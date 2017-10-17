@@ -25,7 +25,10 @@ public class QueryExecutor {
     public Structure handle(RawQuery rawQuery) throws ExecutionException, InterruptedException {
         try {
             ParsedQuery parsedQuery = queryParser.parse(rawQuery);
+
+            // TODO: Prevent loading this on every handle call
             QueryHandlerMap queryHandlerMap = new QueryHandlerMap(parsedQuery.getQueryData());
+
             Future<Structure> future = executorService.submit(queryHandlerMap.getHandler(parsedQuery.getQueryType()));
             return future.get();
         } catch (Throwable t) {
