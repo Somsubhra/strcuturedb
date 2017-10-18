@@ -58,3 +58,7 @@ sdb-create-app {"app": "testapp"}
 ```
 sdb-list-apps
 ```
+
+### License
+
+StructureDB is MIT-licensed. Please access the LICENSE file for the full license.
