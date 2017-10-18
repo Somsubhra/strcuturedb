@@ -17,11 +17,12 @@ public class AppDirectory {
         File file = new File(Paths.get(dataPath, appName).toString());
 
         if (!file.exists()) {
-            Console.info("Creating app directory for " + appName);
+            Console.info("Creating app directory for '" + appName + "'");
 
             if (file.mkdirs()) {
-                Console.info("Initialized app directory successfully");
+                Console.info("Initialized app directory successfully for '" + appName + "'");
             } else {
+                Console.error("Error creating app directory for '" + appName + "'");
                 throw new AppDirectoryInitializationException(appName);
             }
         }

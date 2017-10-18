@@ -1,7 +1,6 @@
 package org.structuredb.fileops.app;
 
 import org.structuredb.exception.app.AppExistsException;
-import org.structuredb.exception.app.AppFilesInitializationException;
 import org.structuredb.utils.Console;
 
 import java.io.File;
@@ -11,22 +10,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
-import java.nio.file.Paths;
 
 public class AppFiles {
 
     public static void init(String dataPath) throws IOException {
-
-        File file = new File(Paths.get(dataPath, "apps").toString());
-
-        if (!file.exists()) {
-            Console.info("App index not initialized. Creating now.");
-            if (file.createNewFile()) {
-                Console.info("Initialized app index successfully");
-            } else {
-                throw new AppFilesInitializationException();
-            }
-        }
+        AppIndex.initAppIndex(dataPath);
     }
 
     public static boolean appExists(String dataPath, String appName) {
@@ -47,7 +35,7 @@ public class AppFiles {
             lock = lockFileChannel.tryLock();
 
             if (lock != null) {
-                Console.info("Acquired lock for creating app " + appName);
+                Console.info("Acquired lock for creating app '" + appName + "'");
                 lockFile.deleteOnExit();
 
                 ByteBuffer bytes = ByteBuffer.allocate(4);
@@ -63,11 +51,11 @@ public class AppFiles {
                 AppIndex.addAppEntry(dataPath, appName);
                 AppDirectory.addAppDirectory(dataPath, appName);
             } else {
-                Console.info("Waiting for lock for creating app " + appName);
+                Console.info("Waiting for lock for creating app '" + appName + "'");
                 createApp(dataPath, appName);
             }
         } catch (OverlappingFileLockException e) {
-            Console.info("Waiting for lock for creating app " + appName);
+            Console.info("Waiting for lock for creating app '" + appName + "'");
             createApp(dataPath, appName);
         } catch (Exception e) {
             Console.error(e.getMessage());
