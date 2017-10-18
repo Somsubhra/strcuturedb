@@ -1,6 +1,7 @@
-package org.structuredb.fileops;
+package org.structuredb.fileops.data;
 
-import org.structuredb.exception.DataDirectoryInitializationException;
+import org.structuredb.exception.data.DataDirectoryInitializationException;
+import org.structuredb.fileops.app.AppFiles;
 import org.structuredb.utils.Console;
 
 import java.io.File;
@@ -13,7 +14,7 @@ public class DataFiles {
 
         if (!file.exists()) {
             Console.info("Data directory " + dataPath + " not initialized. Creating now.");
-            if(file.mkdirs()) {
+            if (file.mkdirs()) {
                 Console.info("Initialized data directory successfully");
             } else {
                 throw new DataDirectoryInitializationException();

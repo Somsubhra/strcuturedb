@@ -2,7 +2,7 @@ package org.structuredb;
 
 import org.structuredb.configuration.ConfigReader;
 import org.structuredb.connector.SDBServer;
-import org.structuredb.fileops.DataFiles;
+import org.structuredb.fileops.data.DataFiles;
 import org.structuredb.utils.Console;
 
 import java.io.IOException;

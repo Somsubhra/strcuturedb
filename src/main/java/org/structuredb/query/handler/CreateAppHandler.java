@@ -1,8 +1,8 @@
 package org.structuredb.query.handler;
 
 import com.google.gson.JsonObject;
-import org.structuredb.exception.AppNameRequiredException;
-import org.structuredb.fileops.AppFiles;
+import org.structuredb.exception.app.AppNameRequiredException;
+import org.structuredb.fileops.app.AppFiles;
 import org.structuredb.query.data.QueryData;
 import org.structuredb.structure.AppCreation;
 import org.structuredb.structure.Error;
@@ -20,7 +20,7 @@ public class CreateAppHandler extends QueryHandler {
 
         JsonObject parsedData = queryData.toParsedData().getAsJsonObject();
 
-        if(!parsedData.has("app")) {
+        if (!parsedData.has("app")) {
             return new Error(new AppNameRequiredException());
         }
 

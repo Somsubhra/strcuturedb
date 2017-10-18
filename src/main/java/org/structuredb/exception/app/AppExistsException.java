@@ -1,4 +1,4 @@
-package org.structuredb.exception;
+package org.structuredb.exception.app;
 
 public class AppExistsException extends RuntimeException {
 

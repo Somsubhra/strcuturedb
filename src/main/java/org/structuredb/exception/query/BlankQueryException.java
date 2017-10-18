@@ -1,4 +1,4 @@
-package org.structuredb.exception;
+package org.structuredb.exception.query;
 
 public class BlankQueryException extends RuntimeException {
 
