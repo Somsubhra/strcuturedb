@@ -47,7 +47,7 @@ public class AppFiles {
             lock = lockFileChannel.tryLock();
 
             if (lock != null) {
-                Console.info("Acquired lock for creating app");
+                Console.info("Acquired lock for creating app " + appName);
                 lockFile.deleteOnExit();
 
                 ByteBuffer bytes = ByteBuffer.allocate(4);
@@ -63,11 +63,11 @@ public class AppFiles {
                 AppIndex.addAppEntry(dataPath, appName);
                 AppDirectory.addAppDirectory(dataPath, appName);
             } else {
-                Console.info("Waiting for lock for creating app");
+                Console.info("Waiting for lock for creating app " + appName);
                 createApp(dataPath, appName);
             }
         } catch (OverlappingFileLockException e) {
-            Console.info("Waiting for lock for creating app");
+            Console.info("Waiting for lock for creating app " + appName);
             createApp(dataPath, appName);
         } catch (Exception e) {
             Console.error(e.getMessage());
