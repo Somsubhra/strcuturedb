@@ -1,6 +1,7 @@
 package org.structuredb.query.handler;
 
 import org.structuredb.query.data.QueryData;
+import org.structuredb.query.handler.app.CreateAppHandler;
 import org.structuredb.structure.Structure;
 
 import java.util.HashMap;

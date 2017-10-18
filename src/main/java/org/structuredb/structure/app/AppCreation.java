@@ -1,6 +1,7 @@
-package org.structuredb.structure;
+package org.structuredb.structure.app;
 
 import com.google.gson.JsonObject;
+import org.structuredb.structure.Structure;
 
 public class AppCreation extends Structure {
 

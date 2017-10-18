@@ -1,10 +1,11 @@
-package org.structuredb.query.handler;
+package org.structuredb.query.handler.app;
 
 import com.google.gson.JsonObject;
 import org.structuredb.exception.app.AppNameRequiredException;
 import org.structuredb.fileops.app.AppFiles;
 import org.structuredb.query.data.QueryData;
-import org.structuredb.structure.AppCreation;
+import org.structuredb.query.handler.QueryHandler;
+import org.structuredb.structure.app.AppCreation;
 import org.structuredb.structure.Error;
 import org.structuredb.structure.Structure;
 import org.structuredb.utils.Console;
