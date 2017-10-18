@@ -5,6 +5,7 @@ import org.structuredb.exception.AppExistsException;
 import org.structuredb.exception.AppNameRequiredException;
 import org.structuredb.fileops.AppFiles;
 import org.structuredb.query.data.QueryData;
+import org.structuredb.structure.AppCreation;
 import org.structuredb.structure.Error;
 import org.structuredb.structure.Structure;
 import org.structuredb.utils.Console;
@@ -32,6 +33,6 @@ public class CreateAppHandler extends QueryHandler {
 
         Console.info("Creating app " + appName);
 
-        return new Error(new RuntimeException("Not implemented yet"));
+        return new AppCreation(appName);
     }
 }
