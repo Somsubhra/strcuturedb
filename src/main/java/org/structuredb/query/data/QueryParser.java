@@ -15,6 +15,7 @@ public class QueryParser {
     public QueryParser() {
         queryTypeMap = new HashMap<>();
         queryTypeMap.put("sdb-create-app", QueryType.APP_CREATE);
+        queryTypeMap.put("sdb-list-apps", QueryType.APP_LIST);
     }
 
     public ParsedQuery parse(RawQuery rawQuery) {

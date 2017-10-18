@@ -2,6 +2,7 @@ package org.structuredb.fileops.app;
 
 import org.structuredb.exception.app.AppFilesInitializationException;
 import org.structuredb.exception.app.AppIndexEntryException;
+import org.structuredb.exception.app.AppIndexParseException;
 import org.structuredb.utils.Console;
 
 import java.io.File;
@@ -9,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class AppIndex {
@@ -26,6 +29,31 @@ public class AppIndex {
                 throw new AppFilesInitializationException();
             }
         }
+    }
+
+    public static List<String> getAppsList(String dataPath) {
+        List<String> apps = new ArrayList<>();
+
+        File appIndexFile = new File(Paths.get(dataPath, "apps").toString());
+
+        try {
+            Scanner appIndexScanner = new Scanner(appIndexFile);
+
+            while (appIndexScanner.hasNextLine()) {
+                String appName = appIndexScanner.nextLine().trim();
+
+                if (appName.equals("")) {
+                    continue;
+                }
+
+                apps.add(appName);
+            }
+        } catch (Exception e) {
+            Console.error(e.getMessage());
+            throw new AppIndexParseException();
+        }
+
+        return apps;
     }
 
     public static boolean appEntryExists(String dataPath, String appName) {

@@ -10,11 +10,16 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
+import java.util.List;
 
 public class AppFiles {
 
     public static void init(String dataPath) throws IOException {
         AppIndex.initAppIndex(dataPath);
+    }
+
+    public static List<String> getAppsList(String dataPath) {
+        return AppIndex.getAppsList(dataPath);
     }
 
     public static boolean appExists(String dataPath, String appName) {
