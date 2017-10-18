@@ -1,6 +1,9 @@
 package org.structuredb.fileops;
 
+import org.structuredb.exception.AppDirectoryInitializationException;
+import org.structuredb.exception.AppExistsException;
 import org.structuredb.exception.AppFilesInitializationException;
+import org.structuredb.exception.AppIndexEntryException;
 import org.structuredb.utils.Console;
 
 import java.io.File;
@@ -9,7 +12,10 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
+import java.nio.channels.OverlappingFileLockException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Scanner;
 
 public class AppFiles {
@@ -51,7 +57,29 @@ public class AppFiles {
         return appDirectory.exists() && appInIndex;
     }
 
-    public static void createApp(String dataPath, String appName) {
+    public static void addAppEntryToIndex(String dataPath, String appName) {
+        try {
+            Files.write(Paths.get(dataPath, "apps"), (appName + "\n").getBytes(), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            throw new AppIndexEntryException(appName);
+        }
+    }
+
+    public static void addAppDirectory(String dataPath, String appName) {
+        File file = new File(Paths.get(dataPath, appName).toString());
+
+        if(!file.exists()) {
+            Console.info("Creating app directory for " + appName);
+
+            if(file.mkdirs()) {
+                Console.info("Initialized app directory successfully");
+            } else {
+                throw new AppDirectoryInitializationException(appName);
+            }
+        }
+    }
+
+    public static void createApp(String dataPath, String appName) throws IOException {
         RandomAccessFile lockAccessFile = null;
         FileChannel lockFileChannel;
         FileLock lock = null;
@@ -65,7 +93,7 @@ public class AppFiles {
             lock = lockFileChannel.tryLock();
 
             if(lock != null) {
-                Console.info("Acquired lock");
+                Console.info("Acquired lock for creating app");
                 lockFile.deleteOnExit();
 
                 ByteBuffer bytes = ByteBuffer.allocate(4);
@@ -74,14 +102,22 @@ public class AppFiles {
                 lockFileChannel.write(bytes);
                 lockFileChannel.force(false);
 
-                // Rest of the logic here
+                if(appExists(dataPath, appName)) {
+                    throw new AppExistsException(appName);
+                }
+
+                addAppEntryToIndex(dataPath, appName);
+                addAppDirectory(dataPath, appName);
             } else {
-                Console.info("Waiting for lock");
+                Console.info("Waiting for lock for creating app");
                 createApp(dataPath, appName);
             }
-        } catch (Exception e) {
-            Console.info("Waiting for lock");
+        } catch (OverlappingFileLockException e) {
+            Console.info("Waiting for lock for creating app");
             createApp(dataPath, appName);
+        } catch (Exception e) {
+            Console.error(e.getMessage());
+            throw e;
         } finally {
             if(lock != null && lock.isValid()) {
                 try {
