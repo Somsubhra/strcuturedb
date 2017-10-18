@@ -2,5 +2,11 @@ package org.structuredb.query.handler;
 
 public enum QueryType {
 
-    CREATE_APP
+    APP_LIST,
+
+    APP_CREATE,
+
+    APP_DELETE,
+
+    APP_RENAME
 }

@@ -23,7 +23,7 @@ public class QueryHandlerMap {
     }
 
     private void build() {
-        map.put(QueryType.CREATE_APP, () -> CreateAppHandler.getInstance().run(queryData, dataPath));
+        map.put(QueryType.APP_CREATE, () -> CreateAppHandler.getInstance().run(queryData, dataPath));
     }
 
     public Map<QueryType, Callable<Structure>> getMap() {
