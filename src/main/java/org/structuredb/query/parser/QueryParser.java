@@ -1,8 +1,10 @@
-package org.structuredb.query.data;
+package org.structuredb.query.parser;
 
 import org.structuredb.exception.query.BlankQueryException;
 import org.structuredb.exception.query.UnknownQueryType;
-import org.structuredb.query.handler.QueryType;
+import org.structuredb.query.data.QueryData;
+import org.structuredb.query.data.RawQuery;
+import org.structuredb.query.type.QueryType;
 
 import java.util.Arrays;
 import java.util.HashMap;

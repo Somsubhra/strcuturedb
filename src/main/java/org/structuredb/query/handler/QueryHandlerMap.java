@@ -3,6 +3,7 @@ package org.structuredb.query.handler;
 import org.structuredb.query.data.QueryData;
 import org.structuredb.query.handler.app.CreateAppHandler;
 import org.structuredb.query.handler.app.ListAppsHandler;
+import org.structuredb.query.type.QueryType;
 import org.structuredb.structure.Structure;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package org.structuredb.query.handler;
+package org.structuredb.query.type;
 
 public enum QueryType {
 

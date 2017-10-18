@@ -1,6 +1,7 @@
-package org.structuredb.query.data;
+package org.structuredb.query.parser;
 
-import org.structuredb.query.handler.QueryType;
+import org.structuredb.query.data.QueryData;
+import org.structuredb.query.type.QueryType;
 
 public class ParsedQuery {
 
