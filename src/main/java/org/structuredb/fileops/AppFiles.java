@@ -5,6 +5,10 @@ import org.structuredb.utils.Console;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.channels.FileLock;
 import java.nio.file.Paths;
 import java.util.Scanner;
 
@@ -45,5 +49,55 @@ public class AppFiles {
         }
 
         return appDirectory.exists() && appInIndex;
+    }
+
+    public static void createApp(String dataPath, String appName) {
+        RandomAccessFile lockAccessFile = null;
+        FileChannel lockFileChannel;
+        FileLock lock = null;
+
+        try {
+            File lockFile = new File(dataPath, "apps.lock");
+
+            lockAccessFile = new RandomAccessFile(lockFile, "rw");
+            lockFileChannel = lockAccessFile.getChannel();
+
+            lock = lockFileChannel.tryLock();
+
+            if(lock != null) {
+                Console.info("Acquired lock");
+                lockFile.deleteOnExit();
+
+                ByteBuffer bytes = ByteBuffer.allocate(4);
+                bytes.putInt(1).flip();
+
+                lockFileChannel.write(bytes);
+                lockFileChannel.force(false);
+
+                // Rest of the logic here
+            } else {
+                Console.info("Waiting for lock");
+                createApp(dataPath, appName);
+            }
+        } catch (Exception e) {
+            Console.info("Waiting for lock");
+            createApp(dataPath, appName);
+        } finally {
+            if(lock != null && lock.isValid()) {
+                try {
+                    lock.release();
+                } catch (IOException e) {
+                    Console.error(e.getMessage());
+                }
+            }
+
+            if(lockAccessFile != null) {
+                try {
+                    lockAccessFile.close();
+                } catch (IOException e) {
+                    Console.error(e.getMessage());
+                }
+            }
+        }
     }
 }

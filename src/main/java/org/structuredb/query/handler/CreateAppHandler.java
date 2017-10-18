@@ -1,7 +1,6 @@
 package org.structuredb.query.handler;
 
 import com.google.gson.JsonObject;
-import org.structuredb.exception.AppExistsException;
 import org.structuredb.exception.AppNameRequiredException;
 import org.structuredb.fileops.AppFiles;
 import org.structuredb.query.data.QueryData;
@@ -27,11 +26,8 @@ public class CreateAppHandler extends QueryHandler {
 
         String appName = parsedData.get("app").getAsString();
 
-        if(AppFiles.appExists(dataPath, appName)) {
-            return new Error(new AppExistsException(appName));
-        }
-
         Console.info("Creating app " + appName);
+        AppFiles.createApp(dataPath, appName);
 
         return new AppCreation(appName);
     }
