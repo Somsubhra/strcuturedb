@@ -5,9 +5,9 @@ import org.structuredb.exception.query.UnknownQueryType;
 import org.structuredb.query.data.QueryData;
 import org.structuredb.query.data.RawQuery;
 import org.structuredb.query.type.QueryType;
+import org.structuredb.query.type.QueryTypeMap;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 public class QueryParser {
@@ -15,9 +15,7 @@ public class QueryParser {
     private Map<String, QueryType> queryTypeMap;
 
     public QueryParser() {
-        queryTypeMap = new HashMap<>();
-        queryTypeMap.put("sdb-create-app", QueryType.APP_CREATE);
-        queryTypeMap.put("sdb-list-apps", QueryType.APP_LIST);
+        queryTypeMap = QueryTypeMap.get();
     }
 
     public ParsedQuery parse(RawQuery rawQuery) {
