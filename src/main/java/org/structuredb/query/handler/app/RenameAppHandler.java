@@ -33,7 +33,7 @@ public class RenameAppHandler extends QueryHandler {
         String appName = parsedData.get("app").getAsString();
         String newName = parsedData.get("rename").getAsString();
 
-        Console.info("Rename app '" + appName + "' to '" + newName + "'");
+        Console.info("Renaming app '" + appName + "' to '" + newName + "'");
 
         try {
             AppFiles.renameApp(dataPath, appName, newName);
