@@ -27,7 +27,7 @@ public class CreateAppHandler extends QueryHandler {
 
         String appName = parsedData.get("app").getAsString();
 
-        Console.info("Creating app " + appName);
+        Console.info("Creating app '" + appName + "'");
 
         try {
             AppFiles.createApp(dataPath, appName);

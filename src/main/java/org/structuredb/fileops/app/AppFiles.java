@@ -83,4 +83,12 @@ public class AppFiles {
             }
         }
     }
+
+    public static void deleteApp(String dataPath, String appName) {
+
+    }
+
+    public static void renameApp(String dataPath, String appName, String newName) {
+
+    }
 }
