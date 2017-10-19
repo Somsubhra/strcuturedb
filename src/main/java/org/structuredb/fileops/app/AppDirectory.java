@@ -1,6 +1,8 @@
 package org.structuredb.fileops.app;
 
+import org.structuredb.exception.app.AppDirectoryDeletionException;
 import org.structuredb.exception.app.AppDirectoryInitializationException;
+import org.structuredb.exception.app.AppDirectoryNotFoundException;
 import org.structuredb.utils.Console;
 
 import java.io.File;
@@ -29,7 +31,21 @@ public class AppDirectory {
     }
 
     public static void removeAppDirectory(String dataPath, String appName) {
+        File file = new File(Paths.get(dataPath, appName).toString());
 
+        if(file.exists()) {
+            Console.info("Deleting app directory for '" + appName + "'");
+
+            if (file.delete()) {
+                Console.info("Deleted app directory successfully for '" + appName + "'");
+            } else {
+                Console.error("Error deleting app directory for '" + appName + "'");
+                throw new AppDirectoryDeletionException(appName);
+            }
+        } else {
+            Console.error("App directory for '" + appName + "' not found");
+            throw new AppDirectoryNotFoundException(appName);
+        }
     }
 
     public static void renameAppDirectory(String dataPath, String appName, String newName) {
