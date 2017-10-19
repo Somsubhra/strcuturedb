@@ -11,6 +11,7 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.List;
+import java.util.RandomAccess;
 
 public class AppFiles {
 
@@ -27,6 +28,14 @@ public class AppFiles {
     }
 
     public static void createApp(String dataPath, String appName) throws IOException {
+        while(true) {
+            if(createAppImpl(dataPath, appName)) {
+                break;
+            }
+        }
+    }
+
+    private static boolean createAppImpl(String dataPath, String appName) throws IOException {
         RandomAccessFile lockAccessFile = null;
         FileChannel lockFileChannel;
         FileLock lock = null;
@@ -57,11 +66,11 @@ public class AppFiles {
                 AppDirectory.addAppDirectory(dataPath, appName);
             } else {
                 Console.info("Waiting for lock for creating app '" + appName + "'");
-                createApp(dataPath, appName);
+                return false;
             }
         } catch (OverlappingFileLockException e) {
             Console.info("Waiting for lock for creating app '" + appName + "'");
-            createApp(dataPath, appName);
+            return false;
         } catch (Exception e) {
             Console.error(e.getMessage());
             throw e;
@@ -82,6 +91,8 @@ public class AppFiles {
                 }
             }
         }
+
+        return true;
     }
 
     public static void deleteApp(String dataPath, String appName) {
