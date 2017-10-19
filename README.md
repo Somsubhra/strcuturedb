@@ -59,6 +59,18 @@ sdb-create-app {"app": "testapp"}
 sdb-list-apps
 ```
 
+* Renaming an app
+
+```
+sdb-rename-app {"app": "testapp", "rename": "awesomeapp"}
+```
+
+* Deleting an app
+
+```
+sdb-delete-app {"app": "awesomeapp"}
+```
+
 ### License
 
 StructureDB is MIT-licensed. Please access the LICENSE file for the full license.
