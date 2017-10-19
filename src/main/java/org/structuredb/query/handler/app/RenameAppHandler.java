@@ -6,8 +6,8 @@ import org.structuredb.exception.app.AppRenameRequiredException;
 import org.structuredb.fileops.app.AppFiles;
 import org.structuredb.query.data.QueryData;
 import org.structuredb.query.handler.QueryHandler;
-import org.structuredb.structure.*;
 import org.structuredb.structure.Error;
+import org.structuredb.structure.Structure;
 import org.structuredb.structure.app.AppRename;
 import org.structuredb.utils.Console;
 
@@ -22,11 +22,11 @@ public class RenameAppHandler extends QueryHandler {
 
         JsonObject parsedData = queryData.toParsedData().getAsJsonObject();
 
-        if(!parsedData.has("app")) {
+        if (!parsedData.has("app")) {
             return new Error(new AppNameRequiredException());
         }
 
-        if(!parsedData.has("rename")) {
+        if (!parsedData.has("rename")) {
             return new Error(new AppRenameRequiredException());
         }
 

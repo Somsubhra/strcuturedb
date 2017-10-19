@@ -11,7 +11,6 @@ import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
 import java.nio.channels.OverlappingFileLockException;
 import java.util.List;
-import java.util.RandomAccess;
 
 public class AppFiles {
 
@@ -28,8 +27,8 @@ public class AppFiles {
     }
 
     public static void createApp(String dataPath, String appName) throws IOException {
-        while(true) {
-            if(createAppImpl(dataPath, appName)) {
+        while (true) {
+            if (createAppImpl(dataPath, appName)) {
                 break;
             }
         }
@@ -95,11 +94,125 @@ public class AppFiles {
         return true;
     }
 
-    public static void deleteApp(String dataPath, String appName) {
-
+    public static void deleteApp(String dataPath, String appName) throws IOException {
+        while (true) {
+            if (deleteAppImpl(dataPath, appName)) {
+                break;
+            }
+        }
     }
 
-    public static void renameApp(String dataPath, String appName, String newName) {
+    private static boolean deleteAppImpl(String dataPath, String appName) throws IOException {
+        RandomAccessFile lockAccessFile = null;
+        FileChannel lockFileChannel;
+        FileLock lock = null;
 
+        try {
+            File lockFile = new File(dataPath, "apps.lock");
+
+            lockAccessFile = new RandomAccessFile(lockFile, "rw");
+            lockFileChannel = lockAccessFile.getChannel();
+
+            lock = lockFileChannel.tryLock();
+
+            if (lock != null) {
+                Console.info("Acquired lock for deleting app '" + appName + "'");
+                lockFile.deleteOnExit();
+
+                ByteBuffer bytes = ByteBuffer.allocate(4);
+                bytes.putInt(1).flip();
+
+                lockFileChannel.write(bytes);
+                lockFileChannel.force(false);
+            } else {
+                Console.info("Waiting for lock for deleting app '" + appName + "'");
+                return false;
+            }
+        } catch (OverlappingFileLockException e) {
+            Console.info("Waiting for lock for deleting app '" + appName + "'");
+            return false;
+        } catch (Exception e) {
+            Console.error(e.getMessage());
+            throw e;
+        } finally {
+            if (lock != null && lock.isValid()) {
+                try {
+                    lock.release();
+                } catch (IOException e) {
+                    Console.error(e.getMessage());
+                }
+            }
+
+            if (lockAccessFile != null) {
+                try {
+                    lockAccessFile.close();
+                } catch (IOException e) {
+                    Console.error(e.getMessage());
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static void renameApp(String dataPath, String appName, String newName) throws IOException {
+        while (true) {
+            if (renameAppImpl(dataPath, appName, newName)) {
+                break;
+            }
+        }
+    }
+
+    private static boolean renameAppImpl(String dataPath, String appName, String newName) throws IOException {
+        RandomAccessFile lockAccessFile = null;
+        FileChannel lockFileChannel;
+        FileLock lock = null;
+
+        try {
+            File lockFile = new File(dataPath, "apps.lock");
+
+            lockAccessFile = new RandomAccessFile(lockFile, "rw");
+            lockFileChannel = lockAccessFile.getChannel();
+
+            lock = lockFileChannel.tryLock();
+
+            if (lock != null) {
+                Console.info("Acquired lock for renaming app '" + appName + "'");
+                lockFile.deleteOnExit();
+
+                ByteBuffer bytes = ByteBuffer.allocate(4);
+                bytes.putInt(1).flip();
+
+                lockFileChannel.write(bytes);
+                lockFileChannel.force(false);
+            } else {
+                Console.info("Waiting for lock for renaming app '" + appName + "'");
+                return false;
+            }
+        } catch (OverlappingFileLockException e) {
+            Console.info("waiting for lock for renaming app '" + appName + "'");
+            return false;
+        } catch (Exception e) {
+            Console.error(e.getMessage());
+            throw e;
+        } finally {
+            if (lock != null && lock.isValid()) {
+                try {
+                    lock.release();
+                } catch (IOException e) {
+                    Console.error(e.getMessage());
+                }
+            }
+
+            if (lockAccessFile != null) {
+                try {
+                    lockAccessFile.close();
+                } catch (IOException e) {
+                    Console.error(e.getMessage());
+                }
+            }
+        }
+
+        return true;
     }
 }
