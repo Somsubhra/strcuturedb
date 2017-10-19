@@ -28,4 +28,11 @@ public class AppDirectory {
         }
     }
 
+    public static void removeAppDirectory(String dataPath, String appName) {
+
+    }
+
+    public static void renameAppDirectory(String dataPath, String appName, String newName) {
+
+    }
 }

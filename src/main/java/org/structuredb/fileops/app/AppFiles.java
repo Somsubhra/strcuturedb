@@ -124,6 +124,9 @@ public class AppFiles {
 
                 lockFileChannel.write(bytes);
                 lockFileChannel.force(false);
+
+                AppIndex.removeAppEntry(dataPath, appName);
+                AppDirectory.removeAppDirectory(dataPath, appName);
             } else {
                 Console.info("Waiting for lock for deleting app '" + appName + "'");
                 return false;
@@ -185,6 +188,9 @@ public class AppFiles {
 
                 lockFileChannel.write(bytes);
                 lockFileChannel.force(false);
+
+                AppIndex.renameAppEntry(dataPath, appName, newName);
+                AppDirectory.renameAppDirectory(dataPath, appName, newName);
             } else {
                 Console.info("Waiting for lock for renaming app '" + appName + "'");
                 return false;

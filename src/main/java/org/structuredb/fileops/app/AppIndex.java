@@ -87,4 +87,11 @@ public class AppIndex {
         }
     }
 
+    public static void removeAppEntry(String dataPath, String appName) {
+
+    }
+
+    public static void renameAppEntry(String dataPath, String appName, String newName) {
+
+    }
 }
