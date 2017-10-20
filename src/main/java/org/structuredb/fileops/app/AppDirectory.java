@@ -3,6 +3,7 @@ package org.structuredb.fileops.app;
 import org.structuredb.exception.app.AppDirectoryDeletionException;
 import org.structuredb.exception.app.AppDirectoryInitializationException;
 import org.structuredb.exception.app.AppDirectoryNotFoundException;
+import org.structuredb.exception.app.AppDirectoryRenameException;
 import org.structuredb.utils.Console;
 
 import java.io.File;
@@ -49,6 +50,20 @@ public class AppDirectory {
     }
 
     public static void renameAppDirectory(String dataPath, String appName, String newName) {
+        File file = new File(Paths.get(dataPath, appName).toString());
 
+        if(file.exists()) {
+            Console.info("Renaming app directory for '" + appName + "'");
+
+            if(file.renameTo(new File(Paths.get(dataPath, newName).toString()))) {
+                Console.info("Renamed app directory successfully for '" + appName + "'");
+            } else {
+                Console.error("Error renaming app directory for '" + appName + "'");
+                throw new AppDirectoryRenameException(appName);
+            }
+        } else {
+            Console.error("App directory for '" + appName + "' not found");
+            throw new AppDirectoryNotFoundException(appName);
+        }
     }
 }
